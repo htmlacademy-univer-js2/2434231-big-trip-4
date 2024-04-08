@@ -1,6 +1,6 @@
 import {createElement} from '../render.js';
 import {COLORS} from '../const.js';
-import {humanizeTaskDueDate, isTaskRepeating} from '../utils.js';
+import {humanizeTaskDueDate, isTaskRepeating} from '../presenter/utils.js';
 
 const BLANK_TASK = {
   color: COLORS[0],
