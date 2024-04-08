@@ -13,3 +13,4 @@ export default class NoTaskView extends AbstractView {
     return createNoTaskTemplate();
   }
 }
+
