@@ -67,10 +67,10 @@ function createTaskTemplate(task) {
 }
 
 export default class TaskView {
-    constructor({task}) {
-        this.task = task;
-      }
-    
+  constructor({task}) {
+    this.task = task;
+  }
+
   getTemplate() {
     return createTaskTemplate(this.task);
   }
