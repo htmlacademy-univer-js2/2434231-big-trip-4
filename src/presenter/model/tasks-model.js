@@ -1,4 +1,4 @@
-import {getRandomTask} from '../../mock/task.js';
+import {getRandomTask} from '../mock/task.js';
 
 const TASK_COUNT = 4;
 
