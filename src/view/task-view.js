@@ -1,5 +1,5 @@
 import {createElement} from '../render.js';
-import {humanizeTaskDueDate, isTaskExpired, isTaskRepeating} from '../utils.js';
+import {humanizeTaskDueDate, isTaskExpired, isTaskRepeating} from '../presenter/utils.js';
 
 function createTaskTemplate(task) {
   const {color, description, dueDate, repeating, isArchive, isFavorite} = task;
