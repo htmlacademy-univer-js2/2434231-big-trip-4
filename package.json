@@ -33,6 +33,7 @@
   "dependencies": {
     "css-loader": "^7.0.0",
     "dayjs": "1.11.7",
+    "nanoid": "^5.0.7",
     "style-loader": "^3.3.4"
   }
 }
