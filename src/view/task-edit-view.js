@@ -1,6 +1,9 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {COLORS} from '../const.js';
 import {humanizeTaskDueDate, isTaskRepeating} from '../utils/task.js';
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 const BLANK_TASK = {
   color: COLORS[0],
@@ -90,7 +93,7 @@ function createTaskEditTemplate(data) {
   const repeatingTemplate = createTaskEditRepeatingTemplate(repeating, isRepeating);
 
   const colorsTemplate = createTaskEditColorsTemplate(color);
-  const isSubmitDisabled = isRepeating && !isTaskRepeating(repeating);
+  const isSubmitDisabled = (isDueDate && dueDate === null) || (isRepeating && !isTaskRepeating(repeating));
 
 
   return (
@@ -138,6 +141,7 @@ function createTaskEditTemplate(data) {
 
 export default class TaskEditView extends AbstractStatefulView {
   #handleFormSubmit = null;
+  #datepicker = null;
 
   constructor({task = BLANK_TASK, onFormSubmit}) {
     super();
@@ -149,6 +153,15 @@ export default class TaskEditView extends AbstractStatefulView {
 
   get template() {
     return createTaskEditTemplate(this._state);
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this.#datepicker) {
+      this.#datepicker.destroy();
+      this.#datepicker = null;
+    }
   }
 
   reset(task) {
@@ -173,6 +186,8 @@ export default class TaskEditView extends AbstractStatefulView {
       this.element.querySelector('.card__repeat-days-inner')
         .addEventListener('change', this.#repeatingChangeHandler);
     }
+
+    this.#setDatepicker();
   }
 
   #colorChangeHandler = (evt) => {
@@ -186,6 +201,12 @@ export default class TaskEditView extends AbstractStatefulView {
     evt.preventDefault();
     this._setState({
       description: evt.target.value,
+    });
+  };
+
+  #dueDateChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dueDate: userDate,
     });
   };
 
@@ -217,6 +238,18 @@ export default class TaskEditView extends AbstractStatefulView {
     });
   };
 
+  #setDatepicker() {
+    if (this._state.isDueDate) {
+      this.#datepicker = flatpickr(
+        this.element.querySelector('.card__date'),
+        {
+          dateFormat: 'j F',
+          defaultDate: this._state.dueDate,
+          onChange: this.#dueDateChangeHandler,
+        },
+      );
+    }
+  }
 
   static parseTaskToState(task) {
     return {...task,
